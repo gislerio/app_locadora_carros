@@ -121,7 +121,6 @@ class MarcaController extends Controller
         }
 
         //remove o arquivo antigo
-
         Storage::disk('public')->delete($marca->imagem);
 
         $marca->delete();
