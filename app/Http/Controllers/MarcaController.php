@@ -17,9 +17,16 @@ class MarcaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $marca = $this->marca->all();
+        
+        if ($request->has('atributos')) {
+            
+        } else {
+
+        }
+
+        $marca = $this->marca->with('modelos')->get();
         return response()->json($marca, 200);
     }
 
@@ -52,7 +59,7 @@ class MarcaController extends Controller
      */
     public function show($id)
     {
-        $marca = $this->marca->find($id);
+        $marca = $this->marca->with('modelos')->find($id);
         if ($marca === null) {
             return response()->json(['erro' => 'Recurso pesquisado não existe'], 404);
         }
@@ -97,10 +104,10 @@ class MarcaController extends Controller
             Storage::disk('public')->delete($marca->imagem);
         }
 
-        $marca->update([
-            'nome' => $request->nome,
-            'imagem' => $imagem_urn
-        ]);
+        //preencher o objeto $marca com os dados do request
+        $marca->fill($request->all());
+        $marca->imagem = $imagem_urn;
+        $marca->save();
         return response()->json($marca, 200);
     }
 
