@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CarroController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\LocacaoController;
@@ -29,3 +30,8 @@ Route::apiresource('carro', CarroController::class);
 Route::apiresource('locacao', LocacaoController::class);
 Route::apiresource('marca', MarcaController::class);
 Route::apiresource('modelo', ModeloController::class);
+
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout']);
+Route::post('refresh', [AuthController::class, 'refresh']);
+Route::post('me', [AuthController::class, 'me']);
