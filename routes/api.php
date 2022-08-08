@@ -25,13 +25,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 //Route::resource('cliente', ClienteController::class);
-Route::apiresource('cliente', ClienteController::class);
-Route::apiresource('carro', CarroController::class);
-Route::apiresource('locacao', LocacaoController::class);
-Route::apiresource('marca', MarcaController::class);
-Route::apiresource('modelo', ModeloController::class);
+
+Route::prefix('v1')->middleware('jwt.auth')->group(function () {
+    Route::apiresource('cliente', ClienteController::class);
+    Route::apiresource('carro', CarroController::class);
+    Route::apiresource('locacao', LocacaoController::class);
+    Route::apiresource('marca', MarcaController::class);
+    Route::apiresource('modelo', ModeloController::class);
+    Route::post('me', [AuthController::class, 'me']);
+    Route::post('refresh', [AuthController::class, 'refresh']);
+    Route::post('logout', [AuthController::class, 'logout']);
+});
 
 Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout']);
-Route::post('refresh', [AuthController::class, 'refresh']);
-Route::post('me', [AuthController::class, 'me']);
